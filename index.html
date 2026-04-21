@@ -56,10 +56,11 @@ body {
   display: none;
   box-shadow: 0 0 12px rgba(255, 0, 0, 0.6);
   transition: transform 0.1s ease;
+  position: fixed;
 }
 
 #boton:active {
-  transform: scale(0.95);
+  transform: scale(0.9);
 }
 
 /* CONTADOR */
@@ -74,7 +75,6 @@ body {
   margin-top: 10px;
   font-size: 22px;
   opacity: 0;
-  z-index: 4;
   transition: opacity 1s ease;
 }
 
@@ -189,19 +189,32 @@ let golpes = 0;
 let tiempo = 10;
 let intervalo = null;
 
+// mensaje inicial
 setTimeout(() => {
   mensaje.style.opacity = "1";
 }, 1500);
 
+// empieza juego
 setTimeout(() => {
   mensaje.style.opacity = "0";
-  boton.style.display = "inline-block";
+  boton.style.display = "block";
   contador.style.display = "block";
 }, 3500);
 
+// atacar
 boton.addEventListener("click", () => {
   golpes++;
   contador.textContent = `Golpea al dragón: ${golpes} / 5`;
+
+  // mover botón aleatoriamente
+  const maxX = window.innerWidth - boton.offsetWidth;
+  const maxY = window.innerHeight - boton.offsetHeight;
+
+  const randomX = Math.random() * maxX;
+  const randomY = Math.random() * maxY;
+
+  boton.style.left = randomX + "px";
+  boton.style.top = randomY + "px";
 
   if (golpes >= 5) {
     boton.style.display = "none";
