@@ -10,31 +10,36 @@ body {
   margin: 0;
   background: radial-gradient(circle, #000000 40%, #1a0000);
   color: white;
-  text-align: center;
-  overflow: hidden;
   font-family: 'Georgia', serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
 }
 
 /* CONTENEDOR */
 .container {
-  position: relative;
-  top: 50%;
-  transform: translateY(-50%);
+  text-align: center;
+  width: 90%;
+  max-width: 400px;
+}
+
+/* IMÁGENES */
+img {
+  width: 100%;
+  max-width: 250px;
 }
 
 /* DRAGÓN */
 #dragon {
-  width: 220px;
   animation: fadeOut 2s ease forwards;
   animation-delay: 3s;
 }
 
 /* FUEGO */
 #fuego {
-  width: 240px;
   position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
   opacity: 0;
   animation: fuegoAnim 2s ease forwards;
   animation-delay: 3s;
@@ -42,7 +47,6 @@ body {
 
 /* ROSA */
 #rosa {
-  width: 180px;
   opacity: 0;
   filter: drop-shadow(0 0 10px red);
   animation: aparecer 2s ease forwards;
@@ -52,7 +56,7 @@ body {
 /* TEXTO */
 #texto {
   margin-top: 20px;
-  font-size: 26px;
+  font-size: 22px;
   opacity: 0;
   animation: aparecer 2s ease forwards;
   animation-delay: 7s;
@@ -64,9 +68,9 @@ body {
 }
 
 @keyframes fuegoAnim {
-  0% { opacity: 0; transform: translateX(-50%) scale(0.8); }
-  50% { opacity: 1; transform: translateX(-50%) scale(1.2); }
-  100% { opacity: 0; transform: translateX(-50%) scale(0.5); }
+  0% { opacity: 0; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0; transform: scale(0.5); }
 }
 
 @keyframes aparecer {
