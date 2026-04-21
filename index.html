@@ -30,9 +30,16 @@ body {
   cursor: pointer;
 }
 
-/* CONTADOR GOLPES */
+/* MENSAJE */
+#mensaje {
+  font-size: 22px;
+  color: orange;
+  text-shadow: 0 0 10px red;
+  margin-bottom: 10px;
+}
+
+/* CONTADOR */
 #contador {
-  margin-top: 10px;
   font-size: 18px;
 }
 
@@ -51,14 +58,14 @@ body {
   opacity: 0;
 }
 
-/* CONTADOR TIEMPO */
+/* TIEMPO */
 #tiempo {
   margin-top: 15px;
   font-size: 18px;
   opacity: 0;
 }
 
-/* PERGAMINO FULL SCREEN */
+/* PERGAMINO */
 #pergamino {
   position: fixed;
   top: 0;
@@ -82,7 +89,10 @@ body {
 <body>
 
 <div class="container">
+  <div id="mensaje">SALVA A LA PRINCESA 🔥</div>
+
   <img id="dragon" src="dragon.gif">
+
   <div id="contador">Golpea al dragón: 0 / 5</div>
 
   <img id="rosa" src="rosa.png">
@@ -112,8 +122,11 @@ const texto = document.getElementById("texto");
 const tiempoDiv = document.getElementById("tiempo");
 const pergamino = document.getElementById("pergamino");
 
-// CLICK DRAGÓN
-dragon.addEventListener("click", () => {
+// CLICK (funciona en móvil también)
+dragon.addEventListener("click", golpear);
+dragon.addEventListener("touchstart", golpear);
+
+function golpear() {
   if (!juegoActivo) return;
 
   golpes++;
@@ -125,11 +138,10 @@ dragon.addEventListener("click", () => {
   if (golpes >= 5) {
     juegoActivo = false;
 
-    // ocultar dragón y contador
     dragon.style.display = "none";
     contador.style.display = "none";
+    document.getElementById("mensaje").style.display = "none";
 
-    // mostrar rosa y texto
     rosa.style.opacity = 1;
     texto.style.opacity = 1;
 
@@ -149,7 +161,7 @@ dragon.addEventListener("click", () => {
 
     }, 1000);
   }
-});
+}
 
 // PERGAMINO
 function mostrarPergamino() {
