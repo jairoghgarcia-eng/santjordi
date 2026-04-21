@@ -52,7 +52,7 @@ body {
   cursor: pointer;
   display: none;
   box-shadow: 0 0 10px red;
-  position: absolute; /* 👈 CLAVE */
+  position: absolute;
   left: 50%;
   transform: translateX(-50%);
 }
@@ -123,6 +123,7 @@ body {
   padding: 20px;
   opacity: 0;
   pointer-events: none;
+  z-index: 999;
 }
 
 #pergamino.visible {
@@ -135,6 +136,7 @@ body {
 <body>
 
 <div class="container" id="zona">
+
   <div id="mensaje">SALVA A LA PRINCESA!! 🔥</div>
 
   <img id="dragon" src="dragon.gif">
@@ -150,50 +152,56 @@ body {
   <div id="amor">Te amo muchoooo ❤️</div>
 
   <div id="tiempo">Tiempo: 10</div>
+
 </div>
 
 <div id="fondoRosas"></div>
 
 <div id="pergamino">
   🏰 Has completado la misión…<br><br>
-  (mensaje final 😏)
+  (Aquí pondremos tu mensaje final 😏)
 </div>
 
 <script>
+
 const boton = document.getElementById("boton");
 const zona = document.getElementById("zona");
 
 let golpes = 0;
 
-// mensaje
+// MENSAJE
 setTimeout(() => {
   document.getElementById("mensaje").style.opacity = "1";
 }, 1500);
 
-// juego
+// INICIO
 setTimeout(() => {
   document.getElementById("mensaje").style.opacity = "0";
   boton.style.display = "block";
   document.getElementById("contador").style.display = "block";
 }, 3000);
 
-// mover dentro del contenedor
+// MOVER BOTÓN (ZONA REDUCIDA)
 function moverBoton() {
   const zonaRect = zona.getBoundingClientRect();
   const btnRect = boton.getBoundingClientRect();
 
-  const maxX = zonaRect.width - btnRect.width;
-  const maxY = zonaRect.height - btnRect.height;
+  const margenX = zonaRect.width * 0.2;
+  const margenY = zonaRect.height * 0.2;
 
-  const x = Math.random() * maxX;
-  const y = Math.random() * maxY;
+  const maxX = zonaRect.width * 0.6 - btnRect.width;
+  const maxY = zonaRect.height * 0.6 - btnRect.height;
+
+  const x = margenX + Math.random() * maxX;
+  const y = margenY + Math.random() * maxY;
 
   boton.style.left = x + "px";
   boton.style.top = y + "px";
 }
 
-// click
+// CLICK
 boton.addEventListener("click", () => {
+
   golpes++;
   document.getElementById("contador").textContent =
     `Golpea al dragón: ${golpes} / 5`;
@@ -201,6 +209,7 @@ boton.addEventListener("click", () => {
   moverBoton();
 
   if (golpes >= 5) {
+
     boton.style.display = "none";
     document.getElementById("dragon").style.display = "none";
 
@@ -222,8 +231,10 @@ boton.addEventListener("click", () => {
         document.getElementById("pergamino").classList.add("visible");
       }
     }, 1000);
+
   }
 });
+
 </script>
 
 </body>
