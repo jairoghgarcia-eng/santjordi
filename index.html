@@ -8,12 +8,12 @@
 <style>
 body {
   margin: 0;
-  background: radial-gradient(circle at center, #000000 30%, #1a0000 100%);
+  background: radial-gradient(circle, #000000 40%, #1a0000);
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  font-family: 'Georgia', serif;
+  font-family: Georgia, serif;
   color: white;
 }
 
@@ -28,33 +28,12 @@ body {
 #dragon {
   width: 100%;
   cursor: pointer;
-  transition: transform 0.1s;
 }
 
-/* MENSAJE */
-#mensaje {
-  position: absolute;
-  top: 25%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 22px;
-  font-weight: bold;
-  color: orange;
-  text-shadow: 0 0 10px red, 0 0 20px orange;
-  opacity: 0;
-}
-
-/* CONTADOR */
+/* CONTADOR GOLPES */
 #contador {
   margin-top: 10px;
   font-size: 18px;
-  opacity: 0;
-}
-
-/* TIEMPO */
-#tiempo {
-  font-size: 16px;
-  opacity: 0;
 }
 
 /* ROSA */
@@ -63,35 +42,39 @@ body {
   opacity: 0;
   margin-top: 20px;
   filter: drop-shadow(0 0 15px red);
-  border-radius: 10px;
 }
 
 /* TEXTO FINAL */
 #texto {
-  margin-top: 20px;
+  margin-top: 15px;
   font-size: 20px;
   opacity: 0;
-  line-height: 1.4;
 }
 
-/* PERGAMINO BONITO */
-#pergamino {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.9);
-  background: linear-gradient(#f5deb3, #e6c79c);
-  color: #3b2a1a;
-  padding: 25px;
-  border-radius: 15px;
-  width: 80%;
-  max-width: 320px;
-  text-align: center;
+/* CONTADOR TIEMPO */
+#tiempo {
+  margin-top: 15px;
   font-size: 18px;
   opacity: 0;
-  box-shadow: 0 0 30px rgba(0,0,0,0.7);
-  border: 3px solid #d4a373;
-  transition: all 0.5s ease;
+}
+
+/* PERGAMINO FULL SCREEN */
+#pergamino {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #f5deb3;
+  color: #3b2a1a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 22px;
+  padding: 30px;
+  opacity: 0;
+  z-index: 999;
 }
 </style>
 </head>
@@ -100,56 +83,36 @@ body {
 
 <div class="container">
   <img id="dragon" src="dragon.gif">
-  <div id="mensaje">SALVA A LA PRINCESA!! 🔥</div>
   <div id="contador">Golpea al dragón: 0 / 5</div>
-  <div id="tiempo">Tiempo: 10</div>
+
   <img id="rosa" src="rosa.png">
   <div id="texto">Te has salvado a ti misma,<br><b>Pocoyo ❤️🌹</b></div>
+
+  <div id="tiempo">Tiempo: 10</div>
 </div>
 
 <div id="pergamino">
-  🏰 Has superado la misión…<br><br>
-  Pero lo mejor de esta historia…<br>
-  es que empieza contigo ❤️
+  <div>
+    🏰 Has completado la misión...<br><br>
+    (Aquí irá tu mensaje final 😏)
+  </div>
 </div>
 
 <script>
 
 let golpes = 0;
-let juegoActivo = false;
+let juegoActivo = true;
 let tiempo = 10;
 let intervalo;
 
-// mensaje inicial
-setTimeout(() => {
-  mensaje.style.opacity = 1;
-}, 2000);
-
-// empieza juego
-setTimeout(() => {
-  mensaje.style.opacity = 0;
-  contador.style.opacity = 1;
-  tiempoDiv.style.opacity = 1;
-  juegoActivo = true;
-
-  intervalo = setInterval(() => {
-    tiempo--;
-    tiempoDiv.innerText = "Tiempo: " + tiempo;
-
-    if (tiempo <= 0) {
-      clearInterval(intervalo);
-      mostrarPergamino();
-    }
-  }, 1000);
-
-}, 4000);
-
 const dragon = document.getElementById("dragon");
-const mensaje = document.getElementById("mensaje");
 const contador = document.getElementById("contador");
+const rosa = document.getElementById("rosa");
+const texto = document.getElementById("texto");
 const tiempoDiv = document.getElementById("tiempo");
+const pergamino = document.getElementById("pergamino");
 
-// clicks
+// CLICK DRAGÓN
 dragon.addEventListener("click", () => {
   if (!juegoActivo) return;
 
@@ -161,18 +124,36 @@ dragon.addEventListener("click", () => {
 
   if (golpes >= 5) {
     juegoActivo = false;
-    clearInterval(intervalo);
 
-    dragon.style.opacity = 0;
+    // ocultar dragón y contador
+    dragon.style.display = "none";
+    contador.style.display = "none";
 
-    setTimeout(() => rosa.style.opacity = 1, 500);
-    setTimeout(() => texto.style.opacity = 1, 1500);
-    setTimeout(() => mostrarPergamino(), 3500);
+    // mostrar rosa y texto
+    rosa.style.opacity = 1;
+    texto.style.opacity = 1;
+
+    // empezar contador DESPUÉS
+    setTimeout(() => {
+      tiempoDiv.style.opacity = 1;
+
+      intervalo = setInterval(() => {
+        tiempo--;
+        tiempoDiv.innerText = "Tiempo: " + tiempo;
+
+        if (tiempo <= 0) {
+          clearInterval(intervalo);
+          mostrarPergamino();
+        }
+      }, 1000);
+
+    }, 1000);
   }
 });
 
+// PERGAMINO
 function mostrarPergamino() {
-  document.getElementById("pergamino").style.opacity = 1;
+  pergamino.style.opacity = 1;
 }
 
 </script>
