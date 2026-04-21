@@ -26,7 +26,6 @@ body {
   z-index: 3;
 }
 
-/* MENSAJE */
 #mensaje {
   font-size: 20px;
   color: orange;
@@ -35,13 +34,11 @@ body {
   opacity: 0;
 }
 
-/* DRAGÓN */
 #dragon {
   width: 100%;
   max-width: 260px;
 }
 
-/* BOTÓN */
 #boton {
   padding: 12px 20px;
   font-size: 16px;
@@ -57,21 +54,18 @@ body {
   transform: translateX(-50%);
 }
 
-/* CONTADOR */
 #contador {
   margin-top: 10px;
   font-size: 16px;
   display: none;
 }
 
-/* TEXTO FINAL */
 #texto {
   margin-top: 10px;
   font-size: 20px;
   opacity: 0;
 }
 
-/* FOTO */
 #foto {
   width: 85%;
   border-radius: 12px;
@@ -79,21 +73,18 @@ body {
   opacity: 0;
 }
 
-/* TEXTO AMOR */
 #amor {
   margin-top: 10px;
   font-size: 18px;
   opacity: 0;
 }
 
-/* TIEMPO */
 #tiempo {
   margin-top: 10px;
   font-size: 16px;
   opacity: 0;
 }
 
-/* FONDO */
 #fondoRosas {
   position: fixed;
   top: 0;
@@ -109,7 +100,6 @@ body {
   z-index: 2;
 }
 
-/* PERGAMINO */
 #pergamino {
   position: fixed;
   inset: 0;
@@ -158,8 +148,14 @@ body {
 <div id="fondoRosas"></div>
 
 <div id="pergamino">
-  🏰 Has completado la misión…<br><br>
-  (Aquí pondremos tu mensaje final 😏)
+  <div>
+    Te amo mucho, mi Pocoyo ❤️<br><br>
+    Este Sant Jordi tienes este detallito diferente…<br>
+    porque tu regalo eres tú, que eres mi rosa 🌹<br><br>
+    Por cierto… si te asomas a la ventana,<br>
+    creo que va a llover 😉<br><br>
+    MUUUAAACKKK! 💋
+  </div>
 </div>
 
 <script>
@@ -181,7 +177,7 @@ setTimeout(() => {
   document.getElementById("contador").style.display = "block";
 }, 3000);
 
-// MOVER BOTÓN (ZONA REDUCIDA)
+// MOVER BOTÓN
 function moverBoton() {
   const zonaRect = zona.getBoundingClientRect();
   const btnRect = boton.getBoundingClientRect();
