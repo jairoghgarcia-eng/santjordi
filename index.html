@@ -15,17 +15,15 @@ body {
   height: 100vh;
   font-family: Georgia, serif;
   color: white;
+  overflow: hidden;
 }
 
 .container {
   text-align: center;
   width: 90%;
   max-width: 320px;
-}
-
-/* DRAGÓN */
-#dragon {
-  width: 100%;
+  position: relative;
+  z-index: 1;
 }
 
 /* MENSAJE */
@@ -35,30 +33,44 @@ body {
   text-shadow: 0 0 10px red;
   margin-bottom: 10px;
   opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+/* DRAGÓN */
+#dragon {
+  width: 100%;
+  max-width: 280px;
+  display: block;
+  margin: 0 auto;
 }
 
 /* BOTÓN */
 #boton {
-  margin-top: 10px;
-  padding: 12px 20px;
+  margin-top: 16px;
+  padding: 12px 24px;
   font-size: 18px;
-  background: linear-gradient(red, darkred);
+  font-weight: bold;
+  background: linear-gradient(180deg, #ff4d4d, #990000);
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   color: white;
   cursor: pointer;
   display: none;
-  box-shadow: 0 0 10px red;
-  transition: transform 0.1s;
+  box-shadow: 0 0 12px rgba(255, 0, 0, 0.6);
+  transition: transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+#boton:hover {
+  box-shadow: 0 0 18px rgba(255, 80, 80, 0.9);
 }
 
 #boton:active {
-  transform: scale(0.9);
+  transform: scale(0.95);
 }
 
 /* CONTADOR */
 #contador {
-  margin-top: 10px;
+  margin-top: 12px;
   font-size: 18px;
   display: none;
 }
@@ -66,9 +78,12 @@ body {
 /* ROSA */
 #rosa {
   width: 80%;
+  max-width: 220px;
   opacity: 0;
-  margin-top: 20px;
+  display: block;
+  margin: 20px auto 0;
   filter: drop-shadow(0 0 10px red);
+  transition: opacity 0.8s ease;
 }
 
 /* TEXTO FINAL */
@@ -76,6 +91,7 @@ body {
   margin-top: 20px;
   font-size: 22px;
   opacity: 0;
+  transition: opacity 0.8s ease;
 }
 
 /* TIEMPO */
@@ -83,15 +99,13 @@ body {
   margin-top: 15px;
   font-size: 18px;
   opacity: 0;
+  transition: opacity 0.8s ease;
 }
 
 /* PERGAMINO */
 #pergamino {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background: #f5deb3;
   color: #3b2a1a;
   display: flex;
@@ -101,6 +115,19 @@ body {
   font-size: 22px;
   padding: 30px;
   opacity: 0;
+  pointer-events: none; /* ESTO ARREGLA EL BUG */
+  transition: opacity 0.6s ease;
+  z-index: 999;
+}
+
+#pergamino.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#contenidoPergamino {
+  max-width: 500px;
+  line-height: 1.5;
 }
 </style>
 </head>
@@ -110,13 +137,13 @@ body {
 <div class="container">
   <div id="mensaje">SALVA A LA PRINCESA!! 🔥</div>
 
-  <img id="dragon" src="dragon.gif">
+  <img id="dragon" src="dragon.gif" alt="Dragón">
 
-  <button id="boton">⚔️ ATACAR</button>
+  <button id="boton" type="button">⚔️ ATACAR</button>
 
   <div id="contador">Golpea al dragón: 0 / 5</div>
 
-  <img id="rosa" src="rosa.png">
+  <img id="rosa" src="rosa.png" alt="Rosa">
 
   <div id="texto">Te has salvado a ti misma,<br><b>Pocoyo ❤️🌹</b></div>
 
@@ -124,14 +151,17 @@ body {
 </div>
 
 <div id="pergamino">
-  🏰 Has completado la misión…<br><br>
-  (Aquí pondremos tu mensaje final 😏)
+  <div id="contenidoPergamino">
+    🏰 Has completado la misión…<br><br>
+    Aquí irá tu mensaje final.
+  </div>
 </div>
 
 <script>
 const mensaje = document.getElementById("mensaje");
 const boton = document.getElementById("boton");
 const contador = document.getElementById("contador");
+const dragon = document.getElementById("dragon");
 const rosa = document.getElementById("rosa");
 const texto = document.getElementById("texto");
 const tiempoDiv = document.getElementById("tiempo");
@@ -139,52 +169,45 @@ const pergamino = document.getElementById("pergamino");
 
 let golpes = 0;
 let tiempo = 10;
-let intervalo;
+let intervalo = null;
 
-// 1. aparece mensaje
+// 1. Aparece mensaje
 setTimeout(() => {
-  mensaje.style.opacity = 1;
+  mensaje.style.opacity = "1";
 }, 1500);
 
-// 2. empieza juego
+// 2. Empieza juego
 setTimeout(() => {
-  mensaje.style.opacity = 0;
+  mensaje.style.opacity = "0";
   boton.style.display = "inline-block";
   contador.style.display = "block";
 }, 3500);
 
-// 3. atacar
+// 3. Ataque
 boton.addEventListener("click", () => {
   golpes++;
-  contador.innerText = "Golpea al dragón: " + golpes + " / 5";
-
-  // animación botón
-  boton.style.transform = "scale(0.9)";
-  setTimeout(() => boton.style.transform = "scale(1)", 100);
+  contador.textContent = `Golpea al dragón: ${golpes} / 5`;
 
   if (golpes >= 5) {
     boton.style.display = "none";
     contador.style.display = "none";
+    dragon.style.display = "none";
 
-    document.getElementById("dragon").style.display = "none";
+    rosa.style.opacity = "1";
+    texto.style.opacity = "1";
 
-    rosa.style.opacity = 1;
-    texto.style.opacity = 1;
-
-    // contador después
     setTimeout(() => {
-      tiempoDiv.style.opacity = 1;
+      tiempoDiv.style.opacity = "1";
 
       intervalo = setInterval(() => {
         tiempo--;
-        tiempoDiv.innerText = "Tiempo: " + tiempo;
+        tiempoDiv.textContent = `Tiempo: ${tiempo}`;
 
         if (tiempo <= 0) {
           clearInterval(intervalo);
-          pergamino.style.opacity = 1;
+          pergamino.classList.add("visible");
         }
       }, 1000);
-
     }, 1000);
   }
 });
