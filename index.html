@@ -13,11 +13,11 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  overflow: hidden;
   font-family: Georgia, serif;
   color: white;
 }
 
+/* CONTENEDOR */
 .container {
   position: relative;
   width: 90%;
@@ -29,9 +29,11 @@ body {
 #dragon {
   width: 100%;
   cursor: pointer;
-  transition: transform 0.1s;
+  position: relative;
+  z-index: 10; /* MUY IMPORTANTE */
 }
 
+/* MENSAJE */
 #mensaje {
   position: absolute;
   top: 30%;
@@ -42,17 +44,18 @@ body {
   color: orange;
   text-shadow: 0 0 10px red;
   opacity: 0;
-  pointer-events: none;
+  pointer-events: none; /* CLAVE */
+  z-index: 5;
 }
 
-/* CONTADOR GOLPES */
+/* CONTADOR */
 #contador {
   margin-top: 10px;
   font-size: 18px;
   opacity: 0;
 }
 
-/* TEMPORIZADOR */
+/* TIEMPO */
 #tiempo {
   margin-top: 15px;
   font-size: 18px;
@@ -99,44 +102,54 @@ body {
 
 <div class="container">
   <img id="dragon" src="dragon.gif">
+
   <div id="mensaje">SALVA A LA PRINCESA!! 🔥</div>
+
   <div id="contador">Golpea al dragón: 0 / 5</div>
+
   <div id="tiempo">Tiempo: 10</div>
+
   <img id="rosa" src="rosa.png">
-  <div id="texto">Te has salvado a ti misma, Pocoyo ❤️🌹</div>
+
+  <div id="texto">Te has salvado a ti misma,<br><b>Pocoyo ❤️🌹</b></div>
 </div>
 
 <div id="pergamino">
   <div>
     🏰 Has completado la misión…<br><br>
-    (Aquí pondremos tu mensaje final 😏)
+    (Aquí irá tu mensaje final 😏)
   </div>
 </div>
 
 <script>
-
 let golpes = 0;
 let juegoActivo = false;
 let tiempo = 10;
 let intervalo;
 
-// 1. MENSAJE INICIAL
+const dragon = document.getElementById("dragon");
+const mensaje = document.getElementById("mensaje");
+const contador = document.getElementById("contador");
+const tiempoDiv = document.getElementById("tiempo");
+const rosa = document.getElementById("rosa");
+const texto = document.getElementById("texto");
+const pergamino = document.getElementById("pergamino");
+
+// MENSAJE INICIAL
 setTimeout(() => {
   mensaje.style.opacity = 1;
 }, 2000);
 
-// 2. EMPIEZA JUEGO
+// EMPIEZA JUEGO
 setTimeout(() => {
   mensaje.style.opacity = 0;
   contador.style.opacity = 1;
   juegoActivo = true;
 }, 4000);
 
-// CLICK DRAGÓN
-dragon.addEventListener("click", golpear);
-dragon.addEventListener("touchstart", golpear);
+// CLICK (UNIFICADO PC + MÓVIL)
+dragon.addEventListener("pointerdown", () => {
 
-function golpear() {
   if (!juegoActivo) return;
 
   golpes++;
@@ -148,21 +161,18 @@ function golpear() {
   if (golpes >= 5) {
     juegoActivo = false;
 
-    // ocultar dragón + contador
     dragon.style.display = "none";
     contador.style.display = "none";
 
-    // mostrar rosa + texto
     rosa.style.opacity = 1;
     texto.style.opacity = 1;
 
-    // AHORA empieza contador (bien colocado)
     setTimeout(() => {
-      tiempo.style.opacity = 1;
+      tiempoDiv.style.opacity = 1;
 
       intervalo = setInterval(() => {
         tiempo--;
-        document.getElementById("tiempo").innerText = "Tiempo: " + tiempo;
+        tiempoDiv.innerText = "Tiempo: " + tiempo;
 
         if (tiempo <= 0) {
           clearInterval(intervalo);
@@ -172,13 +182,13 @@ function golpear() {
 
     }, 1000);
   }
-}
 
-// PERGAMINO FINAL
+});
+
+// PERGAMINO
 function mostrarPergamino() {
-  document.getElementById("pergamino").style.opacity = 1;
+  pergamino.style.opacity = 1;
 }
-
 </script>
 
 </body>
