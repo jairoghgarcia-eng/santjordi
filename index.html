@@ -15,38 +15,46 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  overflow: hidden;
 }
 
 /* CONTENEDOR */
 .container {
+  position: relative;
   text-align: center;
   width: 90%;
-  max-width: 400px;
+  max-width: 300px;
 }
 
-/* IMÁGENES */
+/* IMÁGENES BASE */
 img {
   width: 100%;
-  max-width: 250px;
 }
 
 /* DRAGÓN */
 #dragon {
+  position: relative;
+  z-index: 2;
   animation: fadeOut 2s ease forwards;
   animation-delay: 3s;
 }
 
-/* FUEGO */
+/* FUEGO (centrado encima del dragón) */
 #fuego {
   position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120%;
   opacity: 0;
+  z-index: 3;
   animation: fuegoAnim 2s ease forwards;
   animation-delay: 3s;
 }
 
 /* ROSA */
 #rosa {
+  position: relative;
+  z-index: 2;
   opacity: 0;
   filter: drop-shadow(0 0 10px red);
   animation: aparecer 2s ease forwards;
@@ -68,9 +76,9 @@ img {
 }
 
 @keyframes fuegoAnim {
-  0% { opacity: 0; transform: scale(0.8); }
-  50% { opacity: 1; transform: scale(1.2); }
-  100% { opacity: 0; transform: scale(0.5); }
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
 }
 
 @keyframes aparecer {
