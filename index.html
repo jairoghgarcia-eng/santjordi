@@ -8,21 +8,20 @@
 <style>
 body {
   margin: 0;
-  background: radial-gradient(circle, #000000 40%, #1a0000);
+  background: radial-gradient(circle at center, #000000 30%, #1a0000 100%);
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  overflow: hidden;
-  font-family: Georgia, serif;
+  font-family: 'Georgia', serif;
   color: white;
 }
 
+/* CONTENEDOR */
 .container {
-  position: relative;
-  width: 90%;
-  max-width: 300px;
   text-align: center;
+  width: 90%;
+  max-width: 320px;
 }
 
 /* DRAGÓN */
@@ -35,13 +34,13 @@ body {
 /* MENSAJE */
 #mensaje {
   position: absolute;
-  top: 30%;
+  top: 25%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 22px;
   font-weight: bold;
   color: orange;
-  text-shadow: 0 0 10px red;
+  text-shadow: 0 0 10px red, 0 0 20px orange;
   opacity: 0;
 }
 
@@ -52,18 +51,47 @@ body {
   opacity: 0;
 }
 
+/* TIEMPO */
+#tiempo {
+  font-size: 16px;
+  opacity: 0;
+}
+
 /* ROSA */
 #rosa {
-  width: 80%;
+  width: 70%;
   opacity: 0;
-  filter: drop-shadow(0 0 10px red);
+  margin-top: 20px;
+  filter: drop-shadow(0 0 15px red);
+  border-radius: 10px;
 }
 
 /* TEXTO FINAL */
 #texto {
   margin-top: 20px;
-  font-size: 22px;
+  font-size: 20px;
   opacity: 0;
+  line-height: 1.4;
+}
+
+/* PERGAMINO BONITO */
+#pergamino {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  background: linear-gradient(#f5deb3, #e6c79c);
+  color: #3b2a1a;
+  padding: 25px;
+  border-radius: 15px;
+  width: 80%;
+  max-width: 320px;
+  text-align: center;
+  font-size: 18px;
+  opacity: 0;
+  box-shadow: 0 0 30px rgba(0,0,0,0.7);
+  border: 3px solid #d4a373;
+  transition: all 0.5s ease;
 }
 </style>
 </head>
@@ -74,59 +102,78 @@ body {
   <img id="dragon" src="dragon.gif">
   <div id="mensaje">SALVA A LA PRINCESA!! 🔥</div>
   <div id="contador">Golpea al dragón: 0 / 5</div>
+  <div id="tiempo">Tiempo: 10</div>
   <img id="rosa" src="rosa.png">
-  <div id="texto">Te has salvado a ti misma, Pocoyo ❤️🌹</div>
+  <div id="texto">Te has salvado a ti misma,<br><b>Pocoyo ❤️🌹</b></div>
+</div>
+
+<div id="pergamino">
+  🏰 Has superado la misión…<br><br>
+  Pero lo mejor de esta historia…<br>
+  es que empieza contigo ❤️
 </div>
 
 <script>
 
 let golpes = 0;
 let juegoActivo = false;
+let tiempo = 10;
+let intervalo;
 
-// 1. Aparece mensaje
+// mensaje inicial
 setTimeout(() => {
-  document.getElementById("mensaje").style.opacity = 1;
+  mensaje.style.opacity = 1;
 }, 2000);
 
-// 2. Empieza el juego
+// empieza juego
 setTimeout(() => {
-  document.getElementById("mensaje").style.opacity = 0;
-  document.getElementById("contador").style.opacity = 1;
+  mensaje.style.opacity = 0;
+  contador.style.opacity = 1;
+  tiempoDiv.style.opacity = 1;
   juegoActivo = true;
+
+  intervalo = setInterval(() => {
+    tiempo--;
+    tiempoDiv.innerText = "Tiempo: " + tiempo;
+
+    if (tiempo <= 0) {
+      clearInterval(intervalo);
+      mostrarPergamino();
+    }
+  }, 1000);
+
 }, 4000);
 
-// 3. Click en dragón
-document.getElementById("dragon").addEventListener("click", () => {
+const dragon = document.getElementById("dragon");
+const mensaje = document.getElementById("mensaje");
+const contador = document.getElementById("contador");
+const tiempoDiv = document.getElementById("tiempo");
+
+// clicks
+dragon.addEventListener("click", () => {
   if (!juegoActivo) return;
 
   golpes++;
-  document.getElementById("contador").innerText = "Golpea al dragón: " + golpes + " / 5";
+  contador.innerText = "Golpea al dragón: " + golpes + " / 5";
 
-  // efecto golpe
-  let dragon = document.getElementById("dragon");
   dragon.style.transform = "scale(0.9)";
-  setTimeout(() => {
-    dragon.style.transform = "scale(1)";
-  }, 100);
+  setTimeout(() => dragon.style.transform = "scale(1)", 100);
 
-  // ganar
   if (golpes >= 5) {
     juegoActivo = false;
+    clearInterval(intervalo);
 
-    // desaparece dragón
     dragon.style.opacity = 0;
 
-    // aparece rosa
-    setTimeout(() => {
-      document.getElementById("rosa").style.opacity = 1;
-    }, 500);
-
-    // texto final
-    setTimeout(() => {
-      document.getElementById("texto").style.opacity = 1;
-    }, 1500);
+    setTimeout(() => rosa.style.opacity = 1, 500);
+    setTimeout(() => texto.style.opacity = 1, 1500);
+    setTimeout(() => mostrarPergamino(), 3500);
   }
 });
+
+function mostrarPergamino() {
+  document.getElementById("pergamino").style.opacity = 1;
+}
 
 </script>
 
