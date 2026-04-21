@@ -13,59 +13,68 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  overflow: hidden;
   font-family: Georgia, serif;
   color: white;
 }
 
-/* CONTENEDOR */
 .container {
-  text-align: center;
+  position: relative;
   width: 90%;
   max-width: 320px;
+  text-align: center;
 }
 
 /* DRAGÓN */
 #dragon {
   width: 100%;
   cursor: pointer;
+  transition: transform 0.1s;
 }
 
 /* MENSAJE */
 #mensaje {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   font-size: 22px;
+  font-weight: bold;
   color: orange;
   text-shadow: 0 0 10px red;
-  margin-bottom: 10px;
+  opacity: 0;
 }
 
-/* CONTADOR */
+/* CONTADOR GOLPES */
 #contador {
+  margin-top: 10px;
   font-size: 18px;
-}
-
-/* ROSA */
-#rosa {
-  width: 70%;
-  opacity: 0;
-  margin-top: 20px;
-  filter: drop-shadow(0 0 15px red);
-}
-
-/* TEXTO FINAL */
-#texto {
-  margin-top: 15px;
-  font-size: 20px;
   opacity: 0;
 }
 
-/* TIEMPO */
+/* TEMPORIZADOR */
 #tiempo {
   margin-top: 15px;
   font-size: 18px;
   opacity: 0;
 }
 
-/* PERGAMINO */
+/* ROSA */
+#rosa {
+  width: 80%;
+  opacity: 0;
+  margin-top: 20px;
+  filter: drop-shadow(0 0 10px red);
+}
+
+/* TEXTO FINAL */
+#texto {
+  margin-top: 20px;
+  font-size: 22px;
+  opacity: 0;
+}
+
+/* PERGAMINO FULL */
 #pergamino {
   position: fixed;
   top: 0;
@@ -89,40 +98,41 @@ body {
 <body>
 
 <div class="container">
-  <div id="mensaje">SALVA A LA PRINCESA 🔥</div>
-
   <img id="dragon" src="dragon.gif">
-
+  <div id="mensaje">SALVA A LA PRINCESA!! 🔥</div>
   <div id="contador">Golpea al dragón: 0 / 5</div>
-
-  <img id="rosa" src="rosa.png">
-  <div id="texto">Te has salvado a ti misma,<br><b>Pocoyo ❤️🌹</b></div>
-
   <div id="tiempo">Tiempo: 10</div>
+  <img id="rosa" src="rosa.png">
+  <div id="texto">Te has salvado a ti misma, Pocoyo ❤️🌹</div>
 </div>
 
 <div id="pergamino">
   <div>
-    🏰 Has completado la misión...<br><br>
-    (Aquí irá tu mensaje final 😏)
+    🏰 Has completado la misión…<br><br>
+    (Aquí pondremos tu mensaje final 😏)
   </div>
 </div>
 
 <script>
 
 let golpes = 0;
-let juegoActivo = true;
+let juegoActivo = false;
 let tiempo = 10;
 let intervalo;
 
-const dragon = document.getElementById("dragon");
-const contador = document.getElementById("contador");
-const rosa = document.getElementById("rosa");
-const texto = document.getElementById("texto");
-const tiempoDiv = document.getElementById("tiempo");
-const pergamino = document.getElementById("pergamino");
+// 1. MENSAJE INICIAL
+setTimeout(() => {
+  mensaje.style.opacity = 1;
+}, 2000);
 
-// CLICK (funciona en móvil también)
+// 2. EMPIEZA JUEGO
+setTimeout(() => {
+  mensaje.style.opacity = 0;
+  contador.style.opacity = 1;
+  juegoActivo = true;
+}, 4000);
+
+// CLICK DRAGÓN
 dragon.addEventListener("click", golpear);
 dragon.addEventListener("touchstart", golpear);
 
@@ -138,20 +148,21 @@ function golpear() {
   if (golpes >= 5) {
     juegoActivo = false;
 
+    // ocultar dragón + contador
     dragon.style.display = "none";
     contador.style.display = "none";
-    document.getElementById("mensaje").style.display = "none";
 
+    // mostrar rosa + texto
     rosa.style.opacity = 1;
     texto.style.opacity = 1;
 
-    // empezar contador DESPUÉS
+    // AHORA empieza contador (bien colocado)
     setTimeout(() => {
-      tiempoDiv.style.opacity = 1;
+      tiempo.style.opacity = 1;
 
       intervalo = setInterval(() => {
         tiempo--;
-        tiempoDiv.innerText = "Tiempo: " + tiempo;
+        document.getElementById("tiempo").innerText = "Tiempo: " + tiempo;
 
         if (tiempo <= 0) {
           clearInterval(intervalo);
@@ -163,9 +174,9 @@ function golpear() {
   }
 }
 
-// PERGAMINO
+// PERGAMINO FINAL
 function mostrarPergamino() {
-  pergamino.style.opacity = 1;
+  document.getElementById("pergamino").style.opacity = 1;
 }
 
 </script>
