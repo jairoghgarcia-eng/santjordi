@@ -70,13 +70,32 @@ body {
   display: none;
 }
 
-/* TEXTO FINAL */
+/* TEXTO FINAL ARRIBA */
 #texto {
-  margin-top: 20px;
+  margin-top: 10px;
   font-size: 22px;
   opacity: 0;
   position: relative;
   z-index: 4;
+  transition: opacity 1s ease;
+}
+
+/* FOTO */
+#foto {
+  width: 90%;
+  max-width: 250px;
+  border-radius: 15px;
+  margin-top: 15px;
+  opacity: 0;
+  box-shadow: 0 0 15px rgba(255,255,255,0.4);
+  transition: opacity 1s ease;
+}
+
+/* TEXTO AMOR */
+#amor {
+  margin-top: 15px;
+  font-size: 20px;
+  opacity: 0;
   transition: opacity 1s ease;
 }
 
@@ -85,8 +104,6 @@ body {
   margin-top: 15px;
   font-size: 18px;
   opacity: 0;
-  position: relative;
-  z-index: 4;
 }
 
 /* FONDO ROSAS */
@@ -98,7 +115,7 @@ body {
   height: 100%;
   background:
     linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)),
-    url("rosas.jpg");
+    url("rosa.jpg");
   background-size: cover;
   background-position: center;
   opacity: 0;
@@ -144,6 +161,10 @@ body {
 
   <div id="texto">Te has salvado a ti misma,<br><b>Pocoyo ❤️🌹</b></div>
 
+  <img id="foto" src="foto.jpg">
+
+  <div id="amor">Te amo muchoooo ❤️</div>
+
   <div id="tiempo">Tiempo: 10</div>
 </div>
 
@@ -160,6 +181,8 @@ const boton = document.getElementById("boton");
 const contador = document.getElementById("contador");
 const dragon = document.getElementById("dragon");
 const texto = document.getElementById("texto");
+const foto = document.getElementById("foto");
+const amor = document.getElementById("amor");
 const tiempoDiv = document.getElementById("tiempo");
 const fondoRosas = document.getElementById("fondoRosas");
 const pergamino = document.getElementById("pergamino");
@@ -168,19 +191,19 @@ let golpes = 0;
 let tiempo = 10;
 let intervalo = null;
 
-// 1. Mensaje
+// mensaje
 setTimeout(() => {
   mensaje.style.opacity = "1";
 }, 1500);
 
-// 2. Juego
+// juego
 setTimeout(() => {
   mensaje.style.opacity = "0";
   boton.style.display = "inline-block";
   contador.style.display = "block";
 }, 3500);
 
-// 3. Ataque
+// atacar
 boton.addEventListener("click", () => {
   golpes++;
   contador.textContent = `Golpea al dragón: ${golpes} / 5`;
@@ -191,7 +214,16 @@ boton.addEventListener("click", () => {
     dragon.style.display = "none";
 
     fondoRosas.style.opacity = "1";
+
     texto.style.opacity = "1";
+
+    setTimeout(() => {
+      foto.style.opacity = "1";
+    }, 800);
+
+    setTimeout(() => {
+      amor.style.opacity = "1";
+    }, 1500);
 
     setTimeout(() => {
       tiempoDiv.style.opacity = "1";
@@ -205,7 +237,7 @@ boton.addEventListener("click", () => {
           pergamino.classList.add("visible");
         }
       }, 1000);
-    }, 1000);
+    }, 2000);
   }
 });
 </script>
