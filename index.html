@@ -28,83 +28,72 @@ body {
 
 /* MENSAJE */
 #mensaje {
-  font-size: 22px;
+  font-size: 20px;
   color: orange;
   text-shadow: 0 0 10px red;
   margin-bottom: 10px;
   opacity: 0;
-  transition: opacity 0.5s ease;
 }
 
 /* DRAGÓN */
 #dragon {
   width: 100%;
-  max-width: 280px;
+  max-width: 260px;
 }
 
 /* BOTÓN */
 #boton {
-  margin-top: 16px;
-  padding: 12px 24px;
-  font-size: 18px;
-  font-weight: bold;
+  padding: 12px 20px;
+  font-size: 16px;
   background: linear-gradient(180deg, #ff4d4d, #990000);
   border: none;
-  border-radius: 12px;
+  border-radius: 10px;
   color: white;
   cursor: pointer;
   display: none;
-  box-shadow: 0 0 12px rgba(255, 0, 0, 0.6);
-  transition: transform 0.1s ease;
-  position: fixed;
-}
-
-#boton:active {
-  transform: scale(0.9);
+  box-shadow: 0 0 10px red;
+  position: absolute; /* 👈 CLAVE */
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 /* CONTADOR */
 #contador {
-  margin-top: 12px;
-  font-size: 18px;
+  margin-top: 10px;
+  font-size: 16px;
   display: none;
 }
 
 /* TEXTO FINAL */
 #texto {
   margin-top: 10px;
-  font-size: 22px;
+  font-size: 20px;
   opacity: 0;
-  transition: opacity 1s ease;
 }
 
 /* FOTO */
 #foto {
-  width: 90%;
-  max-width: 250px;
-  border-radius: 15px;
-  margin-top: 15px;
+  width: 85%;
+  border-radius: 12px;
+  margin-top: 10px;
   opacity: 0;
-  box-shadow: 0 0 15px rgba(255,255,255,0.4);
-  transition: opacity 1s ease;
 }
 
 /* TEXTO AMOR */
 #amor {
-  margin-top: 15px;
-  font-size: 20px;
-  opacity: 0;
-  transition: opacity 1s ease;
-}
-
-/* TIEMPO */
-#tiempo {
-  margin-top: 15px;
+  margin-top: 10px;
   font-size: 18px;
   opacity: 0;
 }
 
-/* FONDO ROSAS */
+/* TIEMPO */
+#tiempo {
+  margin-top: 10px;
+  font-size: 16px;
+  opacity: 0;
+}
+
+/* FONDO */
 #fondoRosas {
   position: fixed;
   top: 0;
@@ -117,7 +106,6 @@ body {
   background-size: cover;
   background-position: center;
   opacity: 0;
-  transition: opacity 1s ease;
   z-index: 2;
 }
 
@@ -131,12 +119,10 @@ body {
   justify-content: center;
   align-items: center;
   text-align: center;
-  font-size: 22px;
-  padding: 30px;
+  font-size: 20px;
+  padding: 20px;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.6s ease;
-  z-index: 999;
 }
 
 #pergamino.visible {
@@ -148,7 +134,7 @@ body {
 
 <body>
 
-<div class="container">
+<div class="container" id="zona">
   <div id="mensaje">SALVA A LA PRINCESA!! 🔥</div>
 
   <img id="dragon" src="dragon.gif">
@@ -170,76 +156,72 @@ body {
 
 <div id="pergamino">
   🏰 Has completado la misión…<br><br>
-  (Aquí pondremos tu mensaje final 😏)
+  (mensaje final 😏)
 </div>
 
 <script>
-const mensaje = document.getElementById("mensaje");
 const boton = document.getElementById("boton");
-const contador = document.getElementById("contador");
-const dragon = document.getElementById("dragon");
-const texto = document.getElementById("texto");
-const foto = document.getElementById("foto");
-const amor = document.getElementById("amor");
-const tiempoDiv = document.getElementById("tiempo");
-const fondoRosas = document.getElementById("fondoRosas");
-const pergamino = document.getElementById("pergamino");
+const zona = document.getElementById("zona");
 
 let golpes = 0;
-let tiempo = 10;
-let intervalo = null;
 
-// mensaje inicial
+// mensaje
 setTimeout(() => {
-  mensaje.style.opacity = "1";
+  document.getElementById("mensaje").style.opacity = "1";
 }, 1500);
 
-// empieza juego
+// juego
 setTimeout(() => {
-  mensaje.style.opacity = "0";
+  document.getElementById("mensaje").style.opacity = "0";
   boton.style.display = "block";
-  contador.style.display = "block";
-}, 3500);
+  document.getElementById("contador").style.display = "block";
+}, 3000);
 
-// atacar
+// mover dentro del contenedor
+function moverBoton() {
+  const zonaRect = zona.getBoundingClientRect();
+  const btnRect = boton.getBoundingClientRect();
+
+  const maxX = zonaRect.width - btnRect.width;
+  const maxY = zonaRect.height - btnRect.height;
+
+  const x = Math.random() * maxX;
+  const y = Math.random() * maxY;
+
+  boton.style.left = x + "px";
+  boton.style.top = y + "px";
+}
+
+// click
 boton.addEventListener("click", () => {
   golpes++;
-  contador.textContent = `Golpea al dragón: ${golpes} / 5`;
+  document.getElementById("contador").textContent =
+    `Golpea al dragón: ${golpes} / 5`;
 
-  // mover botón aleatoriamente
-  const maxX = window.innerWidth - boton.offsetWidth;
-  const maxY = window.innerHeight - boton.offsetHeight;
-
-  const randomX = Math.random() * maxX;
-  const randomY = Math.random() * maxY;
-
-  boton.style.left = randomX + "px";
-  boton.style.top = randomY + "px";
+  moverBoton();
 
   if (golpes >= 5) {
     boton.style.display = "none";
-    contador.style.display = "none";
-    dragon.style.display = "none";
+    document.getElementById("dragon").style.display = "none";
 
-    fondoRosas.style.opacity = "1";
-    texto.style.opacity = "1";
+    document.getElementById("fondoRosas").style.opacity = "1";
+    document.getElementById("texto").style.opacity = "1";
+    document.getElementById("foto").style.opacity = "1";
+    document.getElementById("amor").style.opacity = "1";
 
-    setTimeout(() => foto.style.opacity = "1", 800);
-    setTimeout(() => amor.style.opacity = "1", 1500);
+    let tiempo = 10;
+    const t = document.getElementById("tiempo");
+    t.style.opacity = "1";
 
-    setTimeout(() => {
-      tiempoDiv.style.opacity = "1";
+    const interval = setInterval(() => {
+      tiempo--;
+      t.textContent = "Tiempo: " + tiempo;
 
-      intervalo = setInterval(() => {
-        tiempo--;
-        tiempoDiv.textContent = `Tiempo: ${tiempo}`;
-
-        if (tiempo <= 0) {
-          clearInterval(intervalo);
-          pergamino.classList.add("visible");
-        }
-      }, 1000);
-    }, 2000);
+      if (tiempo <= 0) {
+        clearInterval(interval);
+        document.getElementById("pergamino").classList.add("visible");
+      }
+    }, 1000);
   }
 });
 </script>
