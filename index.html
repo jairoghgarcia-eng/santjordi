@@ -73,9 +73,9 @@ body {
 <div class="container">
   <img id="dragon" src="dragon.gif">
   <div id="mensaje">SALVA A LA PRINCESA!! 🔥</div>
-  <div id="contador">Golpes: 0 / 5</div>
+  <div id="contador">Golpea al dragón: 0 / 5</div>
   <img id="rosa" src="rosa.png">
-  <div id="texto">Has salvado a la princesa ❤️🌹</div>
+  <div id="texto">Te has salvado a ti misma, Pocoyo ❤️🌹</div>
 </div>
 
 <script>
@@ -100,7 +100,7 @@ document.getElementById("dragon").addEventListener("click", () => {
   if (!juegoActivo) return;
 
   golpes++;
-  document.getElementById("contador").innerText = "Golpes: " + golpes + " / 5";
+  document.getElementById("contador").innerText = "Golpea al dragón: " + golpes + " / 5";
 
   // efecto golpe
   let dragon = document.getElementById("dragon");
