@@ -9,81 +9,64 @@
 body {
   margin: 0;
   background: radial-gradient(circle, #000000 40%, #1a0000);
-  color: white;
-  font-family: 'Georgia', serif;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  overflow: hidden;
+  font-family: Georgia, serif;
+  color: white;
 }
 
-/* CONTENEDOR */
 .container {
   position: relative;
-  text-align: center;
   width: 90%;
   max-width: 300px;
-}
-
-/* IMÁGENES BASE */
-img {
-  width: 100%;
+  text-align: center;
 }
 
 /* DRAGÓN */
 #dragon {
+  width: 100%;
   position: relative;
-  z-index: 2;
-  animation: fadeOut 2s ease forwards;
-  animation-delay: 3s;
+  z-index: 1;
 }
 
-/* FUEGO (centrado encima del dragón) */
-#fuego {
+/* TEXTO TIPO FUEGO */
+#mensaje {
   position: absolute;
   top: 40%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  width: 120%;
+  transform: translate(-50%, -50%) scale(0.5);
+  font-size: 24px;
+  font-weight: bold;
+  color: orange;
+  text-shadow: 0 0 10px red, 0 0 20px orange;
   opacity: 0;
-  z-index: 3;
-  animation: fuegoAnim 2s ease forwards;
-  animation-delay: 3s;
+  z-index: 2;
 }
 
 /* ROSA */
 #rosa {
-  position: relative;
-  z-index: 2;
+  width: 80%;
   opacity: 0;
+  position: relative;
+  z-index: 3;
   filter: drop-shadow(0 0 10px red);
-  animation: aparecer 2s ease forwards;
-  animation-delay: 5s;
 }
 
-/* TEXTO */
+/* TEXTO FINAL */
 #texto {
   margin-top: 20px;
   font-size: 22px;
   opacity: 0;
-  animation: aparecer 2s ease forwards;
-  animation-delay: 7s;
 }
 
 /* ANIMACIONES */
-@keyframes fadeOut {
-  to { opacity: 0; transform: scale(0.8); }
-}
-
-@keyframes fuegoAnim {
+@keyframes aparecerMensaje {
   0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
   50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
   100% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
-}
-
-@keyframes aparecer {
-  from { opacity: 0; transform: scale(0.8); }
-  to { opacity: 1; transform: scale(1); }
 }
 </style>
 </head>
@@ -92,10 +75,35 @@ img {
 
 <div class="container">
   <img id="dragon" src="dragon.gif">
-  <img id="fuego" src="fuego.gif">
+  <div id="mensaje">SALVA A LA PRINCESA!! 🔥</div>
   <img id="rosa" src="rosa.png">
   <div id="texto">Feliç Sant Jordi, Andrea ❤️🌹</div>
 </div>
+
+<script>
+
+// 1. Aparece mensaje (como fuego)
+setTimeout(() => {
+  let mensaje = document.getElementById("mensaje");
+  mensaje.style.animation = "aparecerMensaje 2s forwards";
+}, 2500);
+
+// 2. Desaparece dragón
+setTimeout(() => {
+  document.getElementById("dragon").style.opacity = 0;
+}, 3500);
+
+// 3. Aparece rosa
+setTimeout(() => {
+  document.getElementById("rosa").style.opacity = 1;
+}, 4500);
+
+// 4. Texto final
+setTimeout(() => {
+  document.getElementById("texto").style.opacity = 1;
+}, 6000);
+
+</script>
 
 </body>
 </html>
