@@ -1,8 +1,45 @@
 <!DOCTYPE html>
-<html>
-<body style="background:black; color:white; text-align:center;">
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sant Jordi</title>
 
-<h1>FUNCIONA</h1>
+<style>
+body {
+  margin: 0;
+  background: black;
+  color: white;
+  text-align: center;
+}
+
+img {
+  width: 250px;
+}
+
+#rosa, #texto {
+  opacity: 0;
+}
+</style>
+</head>
+
+<body>
+
+<img id="dragon" src="dragon.gif">
+<br>
+<img id="rosa" src="rosa.png">
+<div id="texto">Feliç Sant Jordi ❤️</div>
+
+<script>
+setTimeout(() => {
+  document.getElementById("dragon").style.display = "none";
+  document.getElementById("rosa").style.opacity = 1;
+}, 3000);
+
+setTimeout(() => {
+  document.getElementById("texto").style.opacity = 1;
+}, 5000);
+</script>
 
 </body>
 </html>
