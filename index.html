@@ -11,7 +11,7 @@ body {
   background: radial-gradient(circle, #000000 40%, #1a0000);
   display: flex;
   justify-content: center;
-  align-items: flex-start; /* 👈 clave */
+  align-items: flex-start;
   height: 100vh;
   font-family: Georgia, serif;
   color: white;
@@ -24,7 +24,7 @@ body {
   max-width: 320px;
   position: relative;
   z-index: 3;
-  margin-top: 10vh; /* 👈 BAJAMOS TODO */
+  margin-top: 10vh;
 }
 
 #mensaje {
@@ -38,21 +38,6 @@ body {
 #dragon {
   width: 100%;
   max-width: 260px;
-}
-
-#boton {
-  padding: 12px 20px;
-  font-size: 16px;
-  background: linear-gradient(180deg, #ff4d4d, #990000);
-  border: none;
-  border-radius: 10px;
-  color: white;
-  cursor: pointer;
-  display: none;
-  box-shadow: 0 0 10px red;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
 }
 
 #contador {
@@ -101,6 +86,35 @@ body {
   z-index: 2;
 }
 
+/* FRANJA INFERIOR DEL BOTÓN */
+#zonaBoton {
+  position: fixed;
+  left: 0;
+  bottom: 20px;
+  width: 100%;
+  height: 120px;
+  z-index: 20;
+  display: none;
+  pointer-events: none;
+}
+
+/* BOTÓN */
+#boton {
+  padding: 12px 20px;
+  font-size: 16px;
+  background: linear-gradient(180deg, #ff4d4d, #990000);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 0 10px red;
+  position: absolute;
+  left: 50%;
+  top: 35px;
+  transform: translateX(-50%);
+  pointer-events: auto;
+}
+
 #pergamino {
   position: fixed;
   inset: 0;
@@ -127,12 +141,9 @@ body {
 <body>
 
 <div class="container" id="zona">
-
   <div id="mensaje">SALVA A LA PRINCESA!! 🔥</div>
 
   <img id="dragon" src="dragon.gif">
-
-  <button id="boton">⚔️ ATACAR</button>
 
   <div id="contador">Golpea al dragón: 0 / 5</div>
 
@@ -143,7 +154,10 @@ body {
   <div id="amor">Te amo muchoooo ❤️</div>
 
   <div id="tiempo">Tiempo: 10</div>
+</div>
 
+<div id="zonaBoton">
+  <button id="boton">⚔️ ATACAR</button>
 </div>
 
 <div id="fondoRosas"></div>
@@ -160,9 +174,8 @@ body {
 </div>
 
 <script>
-
 const boton = document.getElementById("boton");
-const zona = document.getElementById("zona");
+const zonaBoton = document.getElementById("zonaBoton");
 
 let golpes = 0;
 
@@ -174,31 +187,31 @@ setTimeout(() => {
 // INICIO
 setTimeout(() => {
   document.getElementById("mensaje").style.opacity = "0";
-  boton.style.display = "block";
+  zonaBoton.style.display = "block";
   document.getElementById("contador").style.display = "block";
 }, 3000);
 
-// MOVER BOTÓN
+// MOVER BOTÓN SOLO EN LA FRANJA INFERIOR
 function moverBoton() {
-  const zonaRect = zona.getBoundingClientRect();
+  const zonaRect = zonaBoton.getBoundingClientRect();
   const btnRect = boton.getBoundingClientRect();
 
-  const margenX = zonaRect.width * 0.2;
-  const margenY = zonaRect.height * 0.2;
+  const margenX = 20;
+  const margenY = 10;
 
-  const maxX = zonaRect.width * 0.6 - btnRect.width;
-  const maxY = zonaRect.height * 0.6 - btnRect.height;
+  const maxX = zonaRect.width - btnRect.width - margenX * 2;
+  const maxY = zonaRect.height - btnRect.height - margenY * 2;
 
-  const x = margenX + Math.random() * maxX;
-  const y = margenY + Math.random() * maxY;
+  const x = margenX + Math.random() * Math.max(maxX, 1);
+  const y = margenY + Math.random() * Math.max(maxY, 1);
 
   boton.style.left = x + "px";
   boton.style.top = y + "px";
+  boton.style.transform = "none";
 }
 
 // CLICK
 boton.addEventListener("click", () => {
-
   golpes++;
   document.getElementById("contador").textContent =
     `Golpea al dragón: ${golpes} / 5`;
@@ -206,8 +219,7 @@ boton.addEventListener("click", () => {
   moverBoton();
 
   if (golpes >= 5) {
-
-    boton.style.display = "none";
+    zonaBoton.style.display = "none";
     document.getElementById("dragon").style.display = "none";
 
     document.getElementById("fondoRosas").style.opacity = "1";
@@ -218,6 +230,7 @@ boton.addEventListener("click", () => {
     let tiempo = 10;
     const t = document.getElementById("tiempo");
     t.style.opacity = "1";
+    t.textContent = "Tiempo: 10";
 
     const interval = setInterval(() => {
       tiempo--;
@@ -228,10 +241,8 @@ boton.addEventListener("click", () => {
         document.getElementById("pergamino").classList.add("visible");
       }
     }, 1000);
-
   }
 });
-
 </script>
 
 </body>
