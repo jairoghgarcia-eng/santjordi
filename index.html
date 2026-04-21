@@ -17,7 +17,6 @@ body {
   color: white;
 }
 
-/* CONTENEDOR */
 .container {
   position: relative;
   width: 90%;
@@ -30,7 +29,7 @@ body {
   width: 100%;
   cursor: pointer;
   position: relative;
-  z-index: 10; /* MUY IMPORTANTE */
+  z-index: 10;
 }
 
 /* MENSAJE */
@@ -44,8 +43,7 @@ body {
   color: orange;
   text-shadow: 0 0 10px red;
   opacity: 0;
-  pointer-events: none; /* CLAVE */
-  z-index: 5;
+  pointer-events: none;
 }
 
 /* CONTADOR */
@@ -70,14 +68,14 @@ body {
   filter: drop-shadow(0 0 10px red);
 }
 
-/* TEXTO FINAL */
+/* TEXTO */
 #texto {
   margin-top: 20px;
   font-size: 22px;
   opacity: 0;
 }
 
-/* PERGAMINO FULL */
+/* PERGAMINO */
 #pergamino {
   position: fixed;
   top: 0;
@@ -117,16 +115,11 @@ body {
 <div id="pergamino">
   <div>
     🏰 Has completado la misión…<br><br>
-    (Aquí irá tu mensaje final 😏)
+    (Aquí pondremos tu mensaje final 😏)
   </div>
 </div>
 
 <script>
-let golpes = 0;
-let juegoActivo = false;
-let tiempo = 10;
-let intervalo;
-
 const dragon = document.getElementById("dragon");
 const mensaje = document.getElementById("mensaje");
 const contador = document.getElementById("contador");
@@ -135,21 +128,25 @@ const rosa = document.getElementById("rosa");
 const texto = document.getElementById("texto");
 const pergamino = document.getElementById("pergamino");
 
-// MENSAJE INICIAL
+let golpes = 0;
+let juegoActivo = false;
+let tiempo = 10;
+let intervalo;
+
+// 1. mensaje aparece
 setTimeout(() => {
   mensaje.style.opacity = 1;
 }, 2000);
 
-// EMPIEZA JUEGO
+// 2. empieza juego
 setTimeout(() => {
   mensaje.style.opacity = 0;
   contador.style.opacity = 1;
   juegoActivo = true;
 }, 4000);
 
-// CLICK (UNIFICADO PC + MÓVIL)
-dragon.addEventListener("pointerdown", () => {
-
+// CLICK (PC + móvil)
+function golpear() {
   if (!juegoActivo) return;
 
   golpes++;
@@ -176,19 +173,17 @@ dragon.addEventListener("pointerdown", () => {
 
         if (tiempo <= 0) {
           clearInterval(intervalo);
-          mostrarPergamino();
+          pergamino.style.opacity = 1;
         }
       }, 1000);
 
     }, 1000);
   }
-
-});
-
-// PERGAMINO
-function mostrarPergamino() {
-  pergamino.style.opacity = 1;
 }
+
+// eventos correctos
+dragon.addEventListener("click", golpear);
+dragon.addEventListener("touchstart", golpear);
 </script>
 
 </body>
