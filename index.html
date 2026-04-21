@@ -18,46 +18,49 @@ body {
 }
 
 .container {
-  position: relative;
+  text-align: center;
   width: 90%;
   max-width: 320px;
-  text-align: center;
 }
 
 /* DRAGÓN */
 #dragon {
   width: 100%;
-  cursor: pointer;
-  position: relative;
-  z-index: 10;
 }
 
 /* MENSAJE */
 #mensaje {
-  position: absolute;
-  top: 30%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   font-size: 22px;
-  font-weight: bold;
   color: orange;
   text-shadow: 0 0 10px red;
+  margin-bottom: 10px;
   opacity: 0;
-  pointer-events: none;
+}
+
+/* BOTÓN */
+#boton {
+  margin-top: 10px;
+  padding: 12px 20px;
+  font-size: 18px;
+  background: linear-gradient(red, darkred);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  display: none;
+  box-shadow: 0 0 10px red;
+  transition: transform 0.1s;
+}
+
+#boton:active {
+  transform: scale(0.9);
 }
 
 /* CONTADOR */
 #contador {
   margin-top: 10px;
   font-size: 18px;
-  opacity: 0;
-}
-
-/* TIEMPO */
-#tiempo {
-  margin-top: 15px;
-  font-size: 18px;
-  opacity: 0;
+  display: none;
 }
 
 /* ROSA */
@@ -68,10 +71,17 @@ body {
   filter: drop-shadow(0 0 10px red);
 }
 
-/* TEXTO */
+/* TEXTO FINAL */
 #texto {
   margin-top: 20px;
   font-size: 22px;
+  opacity: 0;
+}
+
+/* TIEMPO */
+#tiempo {
+  margin-top: 15px;
+  font-size: 18px;
   opacity: 0;
 }
 
@@ -91,7 +101,6 @@ body {
   font-size: 22px;
   padding: 30px;
   opacity: 0;
-  z-index: 999;
 }
 </style>
 </head>
@@ -99,71 +108,70 @@ body {
 <body>
 
 <div class="container">
-  <img id="dragon" src="dragon.gif">
-
   <div id="mensaje">SALVA A LA PRINCESA!! 🔥</div>
 
-  <div id="contador">Golpea al dragón: 0 / 5</div>
+  <img id="dragon" src="dragon.gif">
 
-  <div id="tiempo">Tiempo: 10</div>
+  <button id="boton">⚔️ ATACAR</button>
+
+  <div id="contador">Golpea al dragón: 0 / 5</div>
 
   <img id="rosa" src="rosa.png">
 
   <div id="texto">Te has salvado a ti misma,<br><b>Pocoyo ❤️🌹</b></div>
+
+  <div id="tiempo">Tiempo: 10</div>
 </div>
 
 <div id="pergamino">
-  <div>
-    🏰 Has completado la misión…<br><br>
-    (Aquí pondremos tu mensaje final 😏)
-  </div>
+  🏰 Has completado la misión…<br><br>
+  (Aquí pondremos tu mensaje final 😏)
 </div>
 
 <script>
-const dragon = document.getElementById("dragon");
 const mensaje = document.getElementById("mensaje");
+const boton = document.getElementById("boton");
 const contador = document.getElementById("contador");
-const tiempoDiv = document.getElementById("tiempo");
 const rosa = document.getElementById("rosa");
 const texto = document.getElementById("texto");
+const tiempoDiv = document.getElementById("tiempo");
 const pergamino = document.getElementById("pergamino");
 
 let golpes = 0;
-let juegoActivo = false;
 let tiempo = 10;
 let intervalo;
 
-// 1. mensaje aparece
+// 1. aparece mensaje
 setTimeout(() => {
   mensaje.style.opacity = 1;
-}, 2000);
+}, 1500);
 
 // 2. empieza juego
 setTimeout(() => {
   mensaje.style.opacity = 0;
-  contador.style.opacity = 1;
-  juegoActivo = true;
-}, 4000);
+  boton.style.display = "inline-block";
+  contador.style.display = "block";
+}, 3500);
 
-// CLICK (PC + móvil)
-function golpear() {
-  if (!juegoActivo) return;
-
+// 3. atacar
+boton.addEventListener("click", () => {
   golpes++;
   contador.innerText = "Golpea al dragón: " + golpes + " / 5";
 
-  dragon.style.transform = "scale(0.9)";
-  setTimeout(() => dragon.style.transform = "scale(1)", 100);
+  // animación botón
+  boton.style.transform = "scale(0.9)";
+  setTimeout(() => boton.style.transform = "scale(1)", 100);
 
   if (golpes >= 5) {
-    juegoActivo = false;
-
-    dragon.style.display = "none";
+    boton.style.display = "none";
     contador.style.display = "none";
+
+    document.getElementById("dragon").style.display = "none";
 
     rosa.style.opacity = 1;
     texto.style.opacity = 1;
 
+    // contador después
     setTimeout(() => {
       tiempoDiv.style.opacity = 1;
 
@@ -179,11 +187,7 @@ function golpear() {
 
     }, 1000);
   }
-}
-
-// eventos correctos
-dragon.addEventListener("click", golpear);
-dragon.addEventListener("touchstart", golpear);
+});
 </script>
 
 </body>
