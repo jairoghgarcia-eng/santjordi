@@ -40,7 +40,6 @@ body {
 #dragon {
   width: 100%;
   max-width: 280px;
-  margin: 0 auto;
 }
 
 /* BOTÓN */
@@ -70,12 +69,11 @@ body {
   display: none;
 }
 
-/* TEXTO FINAL ARRIBA */
+/* TEXTO FINAL */
 #texto {
   margin-top: 10px;
   font-size: 22px;
   opacity: 0;
-  position: relative;
   z-index: 4;
   transition: opacity 1s ease;
 }
@@ -161,7 +159,7 @@ body {
 
   <div id="texto">Te has salvado a ti misma,<br><b>Pocoyo ❤️🌹</b></div>
 
-  <img id="foto" src="foto.jpg">
+  <img id="foto" src="foto.jpeg">
 
   <div id="amor">Te amo muchoooo ❤️</div>
 
@@ -191,19 +189,16 @@ let golpes = 0;
 let tiempo = 10;
 let intervalo = null;
 
-// mensaje
 setTimeout(() => {
   mensaje.style.opacity = "1";
 }, 1500);
 
-// juego
 setTimeout(() => {
   mensaje.style.opacity = "0";
   boton.style.display = "inline-block";
   contador.style.display = "block";
 }, 3500);
 
-// atacar
 boton.addEventListener("click", () => {
   golpes++;
   contador.textContent = `Golpea al dragón: ${golpes} / 5`;
@@ -214,16 +209,10 @@ boton.addEventListener("click", () => {
     dragon.style.display = "none";
 
     fondoRosas.style.opacity = "1";
-
     texto.style.opacity = "1";
 
-    setTimeout(() => {
-      foto.style.opacity = "1";
-    }, 800);
-
-    setTimeout(() => {
-      amor.style.opacity = "1";
-    }, 1500);
+    setTimeout(() => foto.style.opacity = "1", 800);
+    setTimeout(() => amor.style.opacity = "1", 1500);
 
     setTimeout(() => {
       tiempoDiv.style.opacity = "1";
